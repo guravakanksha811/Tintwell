@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tintwell – Colour-first cosmetics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1f1030;
+  --ink-soft:#5b4a6b;
+  --paper:#fcf8fb;
+  --blush:#f5e6ee;
+  --line:#e6d3de;
+  --shade:#c2204a;
+  --shade-soft:#f6d3dc;
+  --gold:#d9b46c;
+  --display:"Young Serif", Georgia, serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#f6eaf1; --ink-soft:#c4b1d0; --paper:#170c24; --blush:#241335; --line:#3a2650; --shade-soft:#3b1830;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#f6eaf1; --ink-soft:#c4b1d0; --paper:#170c24; --blush:#241335; --line:#3a2650; --shade-soft:#3b1830;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 1.0625rem/1.6 var(--body);
+  transition:background-color .5s;
+}
+/* The page recolours itself to the chosen shade */
+body:has(#sh-peach:checked){--shade:#e9724e;--shade-soft:#fbddd0}
+body:has(#sh-plum:checked){--shade:#6b2c5e;--shade-soft:#e8d2e3}
+body:has(#sh-berry:checked){--shade:#a3166f;--shade-soft:#f4cfe4}
+body:has(#sh-nude:checked){--shade:#b9765f;--shade-soft:#f2dcd3}
+@media (prefers-color-scheme: dark){
+  body:has(#sh-peach:checked){--shade-soft:#43211a}
+  body:has(#sh-plum:checked){--shade-soft:#331b30}
+  body:has(#sh-berry:checked){--shade-soft:#41142f}
+  body:has(#sh-nude:checked){--shade-soft:#38241e}
+  body:has(#sh-rouge:checked){--shade-soft:#3b1830}
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--shade);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ---------- header ---------- */
+header.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
+.logo{font:400 1.7rem/1 var(--display);text-decoration:none;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.logo i{width:16px;height:16px;border-radius:50% 50% 50% 0;background:var(--shade);display:inline-block;transform:rotate(-45deg);transition:background .4s}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav ul a{text-decoration:none;font-weight:500;color:var(--ink-soft)}
+.nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--shade);color:#fff;border:0;border-radius:999px;padding:14px 26px;font:600 1rem var(--body);text-decoration:none;cursor:pointer;transition:background .4s,transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+@media (max-width:760px){.nav ul{display:none}}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:72px 0 88px}
+.hero h1{font:400 clamp(2.8rem,6.4vw,5.4rem)/.98 var(--display);margin:0 0 22px;letter-spacing:-.02em}
+.hero p.lead{max-width:46ch;color:var(--ink-soft);font-size:1.2rem;margin:0 0 32px}
+.picker{border:0;padding:0;margin:0 0 34px}
+.picker legend{font-weight:600;margin-bottom:14px;padding:0}
+.swatches{display:flex;gap:14px;flex-wrap:wrap}
+.swatches label{cursor:pointer;display:block;position:relative}
+.swatches .dot{display:block;width:52px;height:52px;border-radius:50%;background:var(--c);box-shadow:inset 0 -6px 10px rgba(0,0,0,.18);transition:transform .2s, box-shadow .2s}
+.swatches input:checked + .dot{transform:scale(1.14);box-shadow:0 0 0 3px var(--paper),0 0 0 6px var(--c)}
+.swatches input:focus-visible + .dot{outline:3px solid var(--ink);outline-offset:6px}
+.swatches label:hover .dot{transform:scale(1.08)}
+.shade-name{margin-top:16px;min-height:1.6em;font-weight:500;color:var(--ink-soft)}
+.shade-name span{display:none}
+body:has(#sh-rouge:checked) .n-rouge,
+body:has(#sh-peach:checked) .n-peach,
+body:has(#sh-plum:checked) .n-plum,
+body:has(#sh-berry:checked) .n-berry,
+body:has(#sh-nude:checked) .n-nude{display:inline}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+
+.stage{position:relative;aspect-ratio:1/1.05;border-radius:46% 46% 24px 24px / 38% 38% 24px 24px;background:var(--shade-soft);display:grid;place-items:center;overflow:hidden;transition:background .5s}
+.stage::before{content:"";position:absolute;width:78%;aspect-ratio:1;border-radius:50%;background:var(--shade);opacity:.16;bottom:-22%;left:11%;transition:background .5s}
+.hero-lip{position:relative;width:clamp(92px,17vw,128px);height:clamp(190px,34vw,260px);margin-top:18%}
+.hero-lip .base{position:absolute;inset:auto 0 0 0;height:56%;border-radius:10px 10px 18px 18px;background:linear-gradient(90deg,#0f0818,#34204a 45%,#0f0818)}
+.hero-lip .ring{position:absolute;left:4%;right:4%;bottom:56%;height:12%;background:linear-gradient(90deg,#a98443,#f3dba3 45%,#a98443);border-radius:6px 6px 0 0}
+.hero-lip .bullet{position:absolute;left:12%;right:12%;bottom:68%;height:60%;background:linear-gradient(90deg,color-mix(in srgb,var(--shade) 82%,#000),var(--shade) 40%,color-mix(in srgb,var(--shade) 80%,#000));clip-path:polygon(0 100%,0 34%,62% 0,100% 20%,100% 100%);border-radius:0 0 4px 4px;transition:background .5s;animation:rise 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{transform:translateY(40%);opacity:0}to{transform:none;opacity:1}}
+.tag-float{position:absolute;background:var(--paper);border-radius:14px;padding:10px 16px;font-weight:600;font-size:.95rem;box-shadow:0 8px 24px rgba(31,16,48,.14)}
+.tag-float.a{top:12%;right:6%}
+.tag-float.b{bottom:12%;left:6%}
+@media (max-width:900px){.hero{grid-template-columns:1fr;padding:40px 0 56px}.stage{max-width:460px;margin:0 auto;width:100%}}
+
+/* ---------- marquee ---------- */
+.strip{background:var(--ink);color:var(--paper);overflow:hidden;padding:18px 0;white-space:nowrap}
+.strip .track{display:inline-flex;gap:48px;animation:slide 30s linear infinite;font:400 1.35rem var(--display)}
+.strip .track span::after{content:"✿";margin-left:48px;color:var(--shade);transition:color .4s}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* ---------- shop ---------- */
+section{padding:88px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+h2{font:400 clamp(2rem,4.4vw,3.2rem)/1.05 var(--display);margin:0;letter-spacing:-.015em;max-width:16ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs label{padding:10px 20px;border-radius:999px;box-shadow:inset 0 0 0 1.5px var(--line);cursor:pointer;font-weight:500;transition:background .2s}
+.tabs label:hover{background:var(--blush)}
+.shop:has(#f-all:checked) label[for=f-all],
+.shop:has(#f-lips:checked) label[for=f-lips],
+.shop:has(#f-face:checked) label[for=f-face],
+.shop:has(#f-skin:checked) label[for=f-skin]{background:var(--ink);color:var(--paper);box-shadow:none}
+.shop:has(#f-lips:checked) .card:not([data-cat~=lips]),
+.shop:has(#f-face:checked) .card:not([data-cat~=face]),
+.shop:has(#f-skin:checked) .card:not([data-cat~=skin]){display:none}
+.shop:has(.tabs input:focus-visible) .tabs{outline:3px solid var(--shade);outline-offset:6px;border-radius:12px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:28px}
+.card{display:flex;flex-direction:column}
+.art{position:relative;height:290px;border-radius:22px;background:var(--bg);display:grid;place-items:center;overflow:hidden;margin-bottom:16px}
+.card:nth-child(3n+2) .art{border-radius:120px 120px 22px 22px}
+.card:nth-child(3n) .art{border-radius:22px 22px 120px 22px}
+.card h3{font:400 1.35rem/1.2 var(--display);margin:0 0 4px}
+.card .desc{color:var(--ink-soft);font-size:.98rem;margin:0 0 14px;flex:1}
+.buy{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.price{font-weight:700;font-size:1.1rem}
+.buy label{cursor:pointer;position:relative;display:inline-block;padding:10px 20px;border-radius:999px;font-weight:600;box-shadow:inset 0 0 0 2px var(--ink);transition:background .2s,color .2s}
+.buy label:hover{background:var(--ink);color:var(--paper)}
+.buy label .added{display:none}
+.card input.bag:checked ~ .buy label{background:var(--shade);color:#fff;box-shadow:none}
+.card input.bag:checked ~ .buy label .add{display:none}
+.card input.bag:checked ~ .buy label .added{display:inline}
+.card input.bag:focus-visible ~ .buy label{outline:3px solid var(--shade);outline-offset:3px}
+.badge{position:absolute;top:14px;left:14px;background:var(--paper);color:var(--ink);font-weight:600;font-size:.82rem;padding:5px 12px;border-radius:999px}
+
+/* CSS-drawn products */
+.o{position:relative}
+.lipstick{width:46px;height:120px;background:linear-gradient(90deg,#120a1d,#3a2552 50%,#120a1d);border-radius:5px 5px 10px 10px;margin-top:70px}
+.lipstick::before{content:"";position:absolute;left:5px;right:5px;bottom:100%;height:60px;margin-bottom:10px;background:linear-gradient(90deg,color-mix(in srgb,var(--c) 80%,#000),var(--c) 45%,color-mix(in srgb,var(--c) 78%,#000));clip-path:polygon(0 100%,0 32%,62% 0,100% 20%,100% 100%)}
+.lipstick::after{content:"";position:absolute;left:2px;right:2px;bottom:100%;height:12px;background:linear-gradient(90deg,#a98443,#f3dba3 45%,#a98443);border-radius:4px 4px 0 0}
+.compact{width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,#f7e7bf,#c79d4f);padding:12px;box-shadow:0 14px 24px rgba(0,0,0,.18)}
+.compact::before{content:"";display:block;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 60%)}
+.compact::after{content:"";position:absolute;inset:34px 70px 70px 34px;border-radius:50%;background:rgba(255,255,255,.35);filter:blur(5px)}
+.serum{width:78px;height:128px;border-radius:14px 14px 20px 20px;background:linear-gradient(90deg,rgba(255,255,255,.55),var(--c) 30%,color-mix(in srgb,var(--c) 70%,#000));margin-top:64px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.4)}
+.serum::before{content:"";position:absolute;left:24px;right:24px;bottom:100%;height:26px;background:#2b1a3d;border-radius:4px 4px 0 0}
+.serum::after{content:"";position:absolute;left:14px;right:14px;bottom:calc(100% + 26px);height:42px;background:#d9b46c;border-radius:30px 30px 6px 6px}
+.jar{width:130px;height:78px;border-radius:12px 12px 18px 18px;background:linear-gradient(90deg,rgba(255,255,255,.7),var(--c) 35%,color-mix(in srgb,var(--c) 75%,#000));margin-top:40px;box-shadow:0 12px 22px rgba(0,0,0,.14)}
+.jar::before{content:"";position:absolute;left:-6px;right:-6px;bottom:100%;height:34px;background:linear-gradient(90deg,#a98443,#f3dba3 45%,#a98443);border-radius:10px 10px 4px 4px}
+.mascara{width:32px;height:190px;border-radius:12px;background:linear-gradient(90deg,#0d0715,#3b2756 50%,#0d0715)}
+.mascara::before{content:"";position:absolute;left:-6px;right:-6px;top:0;height:58px;border-radius:12px;background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 60%,#fff) 45%,var(--c))}
+.mascara::after{content:"";position:absolute;left:12px;width:8px;top:-52px;height:52px;background:#111;border-radius:6px 6px 0 0;box-shadow:-5px 6px 0 -2px #111,5px 6px 0 -2px #111}
+.polish{width:68px;height:104px;border-radius:14px;background:linear-gradient(90deg,rgba(255,255,255,.55),var(--c) 35%,color-mix(in srgb,var(--c) 70%,#000));margin-top:70px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.polish::before{content:"";position:absolute;left:18px;right:18px;bottom:100%;height:62px;background:linear-gradient(90deg,#0f0818,#3a2552 50%,#0f0818);border-radius:6px}
+.polish::after{content:"";position:absolute;left:30px;width:8px;bottom:calc(100% - 10px);height:30px;background:var(--c);border-radius:0 0 4px 4px}
+
+/* floating bag */
+body{counter-reset:bag}
+.card input.bag:checked{counter-increment:bag}
+.bagpill{position:fixed;right:max(20px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:var(--paper);border-radius:999px;padding:14px 22px;font-weight:600;text-decoration:none;box-shadow:0 10px 30px rgba(31,16,48,.35)}
+.bagpill::after{content:"Bag: " counter(bag)}
+
+/* ---------- ingredients ---------- */
+.band{background:var(--blush);transition:background .4s}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:2px solid var(--ink)}
+.fact{padding:32px 28px 8px 0}
+.fact+.fact{padding-left:28px;border-left:1px solid var(--line)}
+.fact h3{font:400 1.5rem var(--display);margin:0 0 8px}
+.fact p{margin:0;color:var(--ink-soft)}
+@media (max-width:820px){.facts{grid-template-columns:1fr}.fact+.fact{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
+
+/* ---------- routine ---------- */
+.routine{display:grid;grid-template-columns:1fr 1.2fr;gap:56px;align-items:start}
+.routine ol{margin:0;padding:0;list-style:none;counter-reset:s}
+.routine li{counter-increment:s;display:grid;grid-template-columns:48px 1fr;gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+.routine li::before{content:counter(s);width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--shade);color:#fff;font:400 1.3rem var(--display);transition:background .4s}
+.routine li b{display:block;font-size:1.12rem}
+.routine li span{color:var(--ink-soft)}
+@media (max-width:820px){.routine{grid-template-columns:1fr;gap:28px}}
+
+/* ---------- reviews ---------- */
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.quote{background:var(--blush);border-radius:22px;padding:28px}
+.quote:nth-child(2){background:var(--shade-soft);transition:background .5s}
+.quote p{font:400 1.2rem/1.4 var(--display);margin:0 0 18px}
+.quote small{color:var(--ink-soft);font-weight:500}
+@media (max-width:820px){.quotes{grid-template-columns:1fr}}
+
+/* ---------- signup + footer ---------- */
+.join{background:var(--shade);color:#fff;border-radius:32px;padding:56px 40px;text-align:center;transition:background .5s}
+.join h2{margin:0 auto 12px;max-width:18ch;color:#fff}
+.join p{margin:0 auto 28px;max-width:44ch;opacity:.92}
+.join .field{display:flex;gap:10px;max-width:480px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.join input[type=email]{flex:1 1 220px;border:0;border-radius:999px;padding:15px 22px;font:500 1rem var(--body);color:#1f1030;background:#fff}
+.join button{border:0;border-radius:999px;padding:15px 28px;font:600 1rem var(--body);background:#1f1030;color:#fff;cursor:pointer}
+.join :focus-visible{outline-color:#fff}
+footer{padding:56px 0 96px;border-top:1px solid var(--line);color:var(--ink-soft)}
+.foot{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.foot .logo{color:var(--ink);margin-bottom:10px}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.foot h4{margin:0 0 10px;color:var(--ink);font-size:1rem}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--ink)}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .strip .track,.hero-lip .bullet{animation:none}
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<!-- Shade picker inputs live at the top so CSS :has() can recolour the whole page -->
+<header class="top">
+  <div class="wrap nav">
+    <a class="logo" href="#top"><i></i>Tintwell</a>
+    <ul>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#clean">What's inside</a></li>
+      <li><a href="#routine">Routine</a></li>
+      <li><a href="#love">Reviews</a></li>
+    </ul>
+    <a class="btn" href="#shop">Shop now</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>Pick a shade. The whole page wears it.</h1>
+      <p class="lead">Tintwell makes lip, face and skin products in colours chosen by pigment, not by trend. Try a shade below and see how it looks before you buy.</p>
+
+      <fieldset class="picker">
+        <legend>Choose a lip shade</legend>
+        <div class="swatches">
+          <label><input class="sr" type="radio" name="shade" id="sh-rouge" checked><span class="dot" style="--c:#c2204a"></span><span class="sr">Rouge</span></label>
+          <label><input class="sr" type="radio" name="shade" id="sh-peach"><span class="dot" style="--c:#e9724e"></span><span class="sr">Peach Fizz</span></label>
+          <label><input class="sr" type="radio" name="shade" id="sh-plum"><span class="dot" style="--c:#6b2c5e"></span><span class="sr">Midnight Plum</span></label>
+          <label><input class="sr" type="radio" name="shade" id="sh-berry"><span class="dot" style="--c:#a3166f"></span><span class="sr">Wild Berry</span></label>
+          <label><input class="sr" type="radio" name="shade" id="sh-nude"><span class="dot" style="--c:#b9765f"></span><span class="sr">Clay Nude</span></label>
+        </div>
+        <div class="shade-name" aria-live="polite">
+          <span class="n-rouge">Rouge – a clear, true red</span>
+          <span class="n-peach">Peach Fizz – bright coral with a glossy finish</span>
+          <span class="n-plum">Midnight Plum – deep wine, matte</span>
+          <span class="n-berry">Wild Berry – juicy magenta</span>
+          <span class="n-nude">Clay Nude – soft, warm everyday brown</span>
+        </div>
+      </fieldset>
+
+      <div class="cta-row">
+        <a class="btn" href="#shop">Shop the collection</a>
+        <a class="btn ghost" href="#routine">See the routine</a>
+      </div>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <div class="hero-lip">
+        <div class="bullet"></div>
+        <div class="ring"></div>
+        <div class="base"></div>
+      </div>
+      <div class="tag-float a">Vegan formula</div>
+      <div class="tag-float b">12-hour wear</div>
+    </div>
+  </div>
+
+  <div class="strip" aria-hidden="true">
+    <div class="track">
+      <span>Cruelty-free</span><span>Fragrance-free options</span><span>Refillable cases</span><span>Dermatologist tested</span><span>Made in small batches</span>
+      <span>Cruelty-free</span><span>Fragrance-free options</span><span>Refillable cases</span><span>Dermatologist tested</span><span>Made in small batches</span>
+    </div>
+  </div>
+
+  <!-- ===== SHOP ===== -->
+  <section id="shop" class="shop">
+    <div class="wrap">
+      <input class="sr" type="radio" name="filter" id="f-all" checked>
+      <input class="sr" type="radio" name="filter" id="f-lips">
+      <input class="sr" type="radio" name="filter" id="f-face">
+      <input class="sr" type="radio" name="filter" id="f-skin">
+
+      <div class="sec-head">
+        <h2>The Tintwell collection</h2>
+        <div class="tabs" role="group" aria-label="Filter products">
+          <label for="f-all">All</label>
+          <label for="f-lips">Lips</label>
+          <label for="f-face">Face and eyes</label>
+          <label for="f-skin">Skin</label>
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <article class="card" data-cat="lips">
+          <input class="sr bag" type="checkbox" id="b1">
+          <div class="art" style="--bg:#f9d9de"><span class="badge">Bestseller</span><div class="o lipstick" style="--c:#c2204a"></div></div>
+          <h3>Rouge Velvet Lipstick</h3>
+          <p class="desc">Creamy matte colour that stays put through lunch and doesn't dry your lips.</p>
+          <div class="buy"><span class="price">₹899</span><label for="b1"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+        <article class="card" data-cat="face">
+          <input class="sr bag" type="checkbox" id="b2">
+          <div class="art" style="--bg:#fbe3d6"><div class="o compact" style="--c:#ee8a72"></div></div>
+          <h3>Peach Cloud Blush</h3>
+          <p class="desc">A soft powder blush that builds from a light flush to a full glow.</p>
+          <div class="buy"><span class="price">₹749</span><label for="b2"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+        <article class="card" data-cat="skin">
+          <input class="sr bag" type="checkbox" id="b3">
+          <div class="art" style="--bg:#efe3f6"><span class="badge">New</span><div class="o serum" style="--c:#c9a4e6"></div></div>
+          <h3>Lilac Glow Serum</h3>
+          <p class="desc">Hyaluronic acid and niacinamide for plump, even-looking skin. Use morning and night.</p>
+          <div class="buy"><span class="price">₹1,299</span><label for="b3"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+        <article class="card" data-cat="skin">
+          <input class="sr bag" type="checkbox" id="b4">
+          <div class="art" style="--bg:#e3f1e6"><div class="o jar" style="--c:#a9d6b5"></div></div>
+          <h3>Aloe Cloud Moisturiser</h3>
+          <p class="desc">A light gel-cream that hydrates for 24 hours without feeling greasy.</p>
+          <div class="buy"><span class="price">₹999</span><label for="b4"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+        <article class="card" data-cat="face">
+          <input class="sr bag" type="checkbox" id="b5">
+          <div class="art" style="--bg:#e5e0f3"><div class="o mascara" style="--c:#6b2c5e"></div></div>
+          <h3>Lash Lift Mascara</h3>
+          <p class="desc">Lengthens and curls without clumping. Smudge-proof and easy to remove with warm water.</p>
+          <div class="buy"><span class="price">₹649</span><label for="b5"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+        <article class="card" data-cat="face lips">
+          <input class="sr bag" type="checkbox" id="b6">
+          <div class="art" style="--bg:#f7dff0"><div class="o polish" style="--c:#a3166f"></div></div>
+          <h3>Wild Berry Gel Polish</h3>
+          <p class="desc">Salon-style shine at home. Chip-resistant for up to ten days.</p>
+          <div class="buy"><span class="price">₹499</span><label for="b6"><span class="add">Add to bag</span><span class="added">Added ✓</span></label></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INGREDIENTS ===== -->
+  <section id="clean" class="band">
+    <div class="wrap">
+      <div class="sec-head"><h2>What goes in, and what stays out</h2></div>
+      <div class="facts">
+        <div class="fact"><h3>Pigments from minerals</h3><p>Iron oxides and mica give colour that lasts. Every shade is tested on a range of skin tones.</p></div>
+        <div class="fact"><h3>Plant oils and butters</h3><p>Shea, jojoba and sunflower seed oil keep lips and skin soft all day.</p></div>
+        <div class="fact"><h3>Nothing you'd rather avoid</h3><p>No parabens, no sulphates, no mineral oil, and no animal-derived ingredients.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROUTINE ===== -->
+  <section id="routine">
+    <div class="wrap routine">
+      <div>
+        <h2>A five-minute routine</h2>
+        <p style="color:var(--ink-soft);max-width:38ch;margin-top:16px">Four steps, one mirror, no fuss. Start with skin and finish with colour.</p>
+      </div>
+      <ol>
+        <li><div><b>Hydrate</b><span>Smooth on Aloe Cloud Moisturiser after washing your face.</span></div></li>
+        <li><div><b>Glow</b><span>Press two drops of Lilac Glow Serum into damp skin.</span></div></li>
+        <li><div><b>Flush</b><span>Sweep Peach Cloud Blush along the cheekbones and up toward the temples.</span></div></li>
+        <li><div><b>Colour</b><span>Finish with your lip shade and a coat of mascara.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===== REVIEWS ===== -->
+  <section id="love" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><h2>Kind words from our customers</h2></div>
+      <div class="quotes">
+        <figure class="quote" style="margin:0"><p>Rouge Velvet is the first red that didn't feel heavy on my lips.</p><small>Ananya, verified buyer</small></figure>
+        <figure class="quote" style="margin:0"><p>The serum made my skin look calmer in a week. I've already reordered.</p><small>Meera, verified buyer</small></figure>
+        <figure class="quote" style="margin:0"><p>Peach blush looks natural on my skin and doesn't fade by evening.</p><small>Riya, verified buyer</small></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIGNUP ===== -->
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="join">
+        <h2>Get 10% off your first order</h2>
+        <p>Join our list for new shades, restocks and skincare tips. We send one email a week at most.</p>
+        <div class="field">
+          <label class="sr" for="em">Email address</label>
+          <input id="em" type="email" placeholder="you@example.com" autocomplete="email">
+          <button type="button">Get my code</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="logo" href="#top"><i></i>Tintwell</a>
+      <p style="margin:0;max-width:30ch">Colour-first cosmetics, made in small batches.</p>
+    </div>
+    <div><h4>Shop</h4><ul><li><a href="#shop">Lips</a></li><li><a href="#shop">Face and eyes</a></li><li><a href="#shop">Skin</a></li></ul></div>
+    <div><h4>Help</h4><ul><li><a href="#top">Shipping</a></li><li><a href="#top">Returns</a></li><li><a href="#top">Contact us</a></li></ul></div>
+    <div><h4>Follow</h4><ul><li><a href="#top">Instagram</a></li><li><a href="#top">YouTube</a></li><li><a href="#top">Pinterest</a></li></ul></div>
+  </div>
+</footer>
+
+<a class="bagpill" href="#shop" aria-label="Items in your bag"></a>
+
+</body>
+</html>
